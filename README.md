@@ -33,6 +33,15 @@ require 'vendor/autoload.php';
 Usage
 -----
 
+```php
+use PrinceXMLPhp\PrinceWrapper;
+
+$prince = new PrinceWrapper('/path/to/prince/binary');
+
+// for instance methods, see the original library documentation
+// @see lib/readme.html
+```
+
 License
 -------
 
