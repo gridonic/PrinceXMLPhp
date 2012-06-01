@@ -1,0 +1,22 @@
+{
+    "name": "gridonic/PrinceXMLPhp",
+    "description": "PrinceXML PHP5 wrapper converted to follow the PSR-0 standard.",
+    "keywords": ["princexml", "xml"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Peter Siska",
+            "email": "pesche@gridonic.ch"
+        },
+        {
+            "name": "Contributors",
+            "homepage": "https://github.com/gridonic/PrinceXMLPhp/contributors"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "psr-0": { "PrinceXMLPhp": "src" }
+    }
+}
