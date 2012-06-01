@@ -1,0 +1,375 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Prince PHP class</title>
+<style type="text/css">
+
+.page {
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto
+}
+
+h2 {
+    font-size: 120%
+}
+
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<h1>Prince PHP class</h1>
+
+<p>
+The prince.php file defines a class called Prince that contains methods that
+can be called to convert XML and HTML documents into PDF.
+</p>
+
+<p>
+Note that the Prince class requires PHP 5, and will not work as is with PHP 4.
+</p>
+
+<h2>Constructor</h2>
+
+<p>
+When instantiating the Prince class, pass in the full path of the prince
+executable to the constructor as a string argument.
+For example, on Linux or MacOS X:
+</p>
+<pre>
+$prince = new Prince('/usr/local/bin/prince');
+</pre>
+<p>
+On Windows, be sure to specify the path to the <code>prince.exe</code> file
+located within the <code>Engine\bin</code> subfolder of the Prince
+installation.
+</p>
+
+<h2>Conversion methods</h2>
+
+<pre>
+public function convert_file($xmlPath, &amp;$msgs = array())
+</pre>
+
+<p>
+Convert an XML or HTML file to a PDF file.
+The name of the output PDF file will be the same as the name of the
+input file but with an extension of ".pdf".
+Returns true if a PDF file was generated successfully.
+</p>
+
+<dl>
+<dt><code>xmlPath</code></dt>
+<dd>The filename of the input XML or HTML document.</dd>
+<dt><code>msgs</code></dt>
+<dd>An optional array in which to return error and warning messages. Each
+message is returned as an array of three strings: the message code
+(<code>'err'</code>, <code>'wrn'</code> or <code>'inf'</code>), the message
+location (eg. a filename) and the message text.</dd>
+<dt><code>return</code></dt>
+<dd>True if a PDF file was generated successfully, false otherwise.</dd>
+</dl>
+
+<hr>
+
+<pre>
+public function convert_file_to_file($xmlPath, $pdfPath, &amp;$msgs = array())
+</pre>
+
+<p>
+Convert an XML or HTML file to a PDF file.
+Returns true if a PDF file was generated successfully.
+</p>
+
+<dl>
+<dt><code>xmlPath</code></dt>
+<dd>The filename of the input XML or HTML document.</dd>
+<dt><code>pdfPath</code></dt>
+<dd>The filename of the output PDF file.</dd>
+<dt><code>msgs</code></dt>
+<dd>An optional array in which to return error and warning messages. Each
+message is returned as an array of three strings: the message code
+(<code>'err'</code>, <code>'wrn'</code> or <code>'inf'</code>), the message
+location (eg. a filename) and the message text.</dd>
+<dt><code>return</code></dt>
+<dd>True if a PDF file was generated successfully, false otherwise.</dd>
+</dl>
+
+<hr>
+
+<pre>
+public function convert_string_to_passthru($xmlString)
+</pre>
+
+<p>
+Convert an XML or HTML string to a PDF file, which will be passed
+through to the output buffer of the current PHP page.
+Returns true if a PDF file was generated successfully.
+</p>
+<p>
+Currently there is no mechanism to retrieve error/warning messages when using
+this convert method. However, the <code>setLog</code> function can be used to
+direct messages to an external file.
+</p>
+
+<dl>
+<dt><code>xmlString</code></dt>
+<dd>A string containing an XML or HTML document.</dd>
+<dt><code>return</code></dt>
+<dd>True if a PDF file was generated successfully, false otherwise.</dd>
+</dl>
+
+<p>
+Note that to have the browser correctly display the PDF output, the following
+two lines will be needed before the convert method is called:
+</p>
+<pre>
+header('Content-Type: application/pdf');
+header('Content-Disposition: inline; filename="foo.pdf"');
+</pre>
+<p>
+You may also specify <code>attachment</code> for the Content-Disposition
+header instead of <code>inline</code>, so that the browser will prompt the
+user to save the PDF file instead of displaying it.
+</p>
+
+<hr>
+
+<pre>
+public function convert_string_to_file($xmlString, $pdfPath, &amp;$msgs = array())
+</pre>
+
+<p>
+Convert an XML or HTML string to a PDF file.
+Returns true if a PDF file was generated successfully.
+</p>
+
+<dl>
+<dt><code>xmlString</code></dt>
+<dd>A string containing an XML or HTML document.</dd>
+<dt><code>pdfPath</code></dt>
+<dd>The filename of the output PDF file.</dd>
+<dt><code>msgs</code></dt>
+<dd>An optional array in which to return error and warning messages. Each
+message is returned as an array of three strings: the message code
+(<code>'err'</code>, <code>'wrn'</code> or <code>'inf'</code>), the message
+location (eg. a filename) and the message text.</dd>
+<dt><code>return</code></dt>
+<dd>True if a PDF file was generated successfully, false otherwise.</dd>
+</dl>
+
+<h2>Configuration methods</h2>
+
+<pre>
+public function addStyleSheet($cssPath)
+</pre>
+
+<p>
+Add a CSS style sheet that will be applied to each input document.
+The <code>addStyleSheet</code> function can be called more than once to add
+multiple style sheets. This function should be called before calling a convert
+function.
+</p>
+
+<dl>
+<dt><code>cssPath</code></dt>
+<dd>The filename of the CSS style sheet to apply.</dd>
+</dl>
+
+<hr>
+
+<pre>
+public function clearStyleSheets()
+</pre>
+
+<p>
+Clear all of the CSS style sheets accumulated by calling
+<code>addStyleSheet</code>.
+</p>
+
+<hr>
+
+<pre>
+public function setHTML($html)
+</pre>
+
+<p>
+Specify whether documents should be parsed as HTML or XML/XHTML.
+</p>
+
+<dl>
+<dt><code>html</code></dt>
+<dd>True if all documents should be treated as HTML.</dd>
+</dl>
+
+<hr>
+
+<pre>
+public function setLog($logFile)
+</pre>
+
+<p>
+Specify a file that Prince should use to log error/warning messages.
+</p>
+
+<dl>
+<dt><code>logFile</code></dt>
+<dd>The filename that Prince should use to log error/warning messages, or ''
+to disable logging.</dd>
+</dl>
+
+<hr>
+
+<pre>
+public function setBaseURL($baseURL)
+</pre>
+
+<p>
+Specify the base URL of the input document.
+</p>
+
+<dl>
+<dt><code>baseURL</code></dt>
+<dd>The base URL or path of the input document, or ''.</dd>
+</dl>
+
+<hr>
+
+<pre>
+public function setXInclude($xinclude)
+</pre>
+
+<p>
+Specify whether XML Inclusions (XInclude) processing should be applied
+to input documents. XInclude processing will be performed by default
+unless explicitly disabled.
+</p>
+
+<dl>
+<dt><code>xinclude</code></dt>
+<dd>False to disable XInclude processing.</dd>
+</dl>
+
+<hr>
+
+<pre>
+public function setHttpUser($user)
+</pre>
+
+<p>
+Specify a username to use when fetching remote resources over HTTP.
+</p>
+
+<dl>
+<dt><code>user</code></dt>
+<dd>The username to use for basic HTTP authentication.</dd>
+</dl>
+
+<hr>
+
+<pre>
+public function setHttpPassword($password)
+</pre>
+
+<p>
+Specify a password to use when fetching remote resources over HTTP.
+</p>
+
+<dl>
+<dt><code>password</code></dt>
+<dd>The password to use for basic HTTP authentication.</dd>
+</dl>
+
+<hr>
+
+<pre>
+public function setEmbedFonts($embedFonts)
+</pre>
+
+<p>
+Specify whether fonts should be embedded in the output PDF file. Fonts
+will be embedded by default unless explicitly disabled.
+</p>
+
+<dl>
+<dt><code>embedFonts</code></dt>
+<dd>False to disable PDF font embedding.</dd>
+</dl>
+
+<hr>
+
+<pre>
+public function setCompress($compress)
+</pre>
+
+<p>
+Specify whether compression should be applied to the output PDF file.
+Compression will be applied by default unless explicitly disabled.
+</p>
+
+<dl>
+<dt><code>compress</code></dt>
+<dd>False to disable PDF compression.</dd>
+</dl>
+
+<hr>
+
+<pre>
+public function setEncrypt($encrypt)
+</pre>
+
+<p>
+Specify whether encryption should be applied to the output PDF file.
+Encryption will not be applied by default unless explicitly enabled.
+</p>
+
+<dl>
+<dt><code>encrypt</code></dt>
+<dd>True to enable PDF encryption.</dd>
+</dl>
+
+<hr>
+
+<pre>
+public function setEncryptInfo($keyBits, $userPassword, $ownerPassword,
+    $disallowPrint = false, $disallowModify = false,
+    $disallowCopy = false, $disallowAnnotate = false)
+</pre>
+
+<p>
+Set the parameters used for PDF encryption. Calling this method will
+also enable encryption, equivalent to calling
+<code>setEncrypt(true)</code>. It should be called before calling a convert
+method for encryption information to be applied.
+</p>
+
+<dl>
+<dt><code>keyBits</code></dt>
+<dd>The size of the encryption key in bits (must be 40 or 128).</dd>
+<dt><code>userPassword</code>
+<dd>The user password for the PDF file (may be empty).</dd>
+<dt><code>ownerPassword</code></dt>
+<dd>The owner password for the PDF file (may be empty).</dd>
+<dt><code>disallowPrint</code></dt>
+<dd>True to disallow printing of the PDF file.</dd>
+<dt><code>disallowModify</code></dt>
+<dd>True to disallow modification of the PDF file.</dd>
+<dt><code>disallowCopy</code></dt>
+<dd>True to disallow copying from the PDF file.</dd>
+<dt><code>disallowAnnotate</code></dt>
+<dd>True to disallow annotation of the PDF file.</dd>
+</dl>
+
+<hr>
+
+<p>
+Copyright &#xA9; 2005-2007 YesLogic Pty. Ltd.
+</p>
+
+</div>
+
+</body>
+</html>
+
