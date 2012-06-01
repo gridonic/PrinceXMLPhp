@@ -11,3 +11,10 @@
 namespace PrinceXMLPhp;
 
 require_once __DIR__.'/../../lib/prince.php';
+
+use \Prince;
+
+class PrinceWrapper extends Prince
+{
+
+}

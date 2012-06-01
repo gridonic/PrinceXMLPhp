@@ -11,19 +11,12 @@
 
 namespace PrinceXMLPhp\Tests;
 
-use PrinceXMLPhp\Prince;
+use PrinceXMLPhp\PrinceWrapper;
 
 class PrinceTest extends \PHPUnit_Framework_TestCase
 {
-    private $prince;
-
-    public function setUp()
-    {
-        $this->prince = new Prince();
-    }
-
     public function testInstance()
     {
-        return true;
+        $this->assertInstanceOf('PrinceXMLPhp\\PrinceWrapper', new PrinceWrapper('/usr/local/bin/prince'));
     }
 }
