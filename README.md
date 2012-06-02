@@ -1,7 +1,7 @@
 PrinceXMLPhp
 ============
 
-PrinceXML PHP5 wrapper, converted to follow PSR-0 conventions.
+[PrinceXML PHP5 wrapper](http://www.princexml.com/download/wrappers), converted to follow PSR-0 conventions.
 
 Fetch
 -----
@@ -34,6 +34,7 @@ Usage
 -----
 
 ```php
+<?php
 use PrinceXMLPhp\PrinceWrapper;
 
 $prince = new PrinceWrapper('/path/to/prince/binary');
