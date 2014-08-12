@@ -1,6 +1,8 @@
 PrinceXMLPhp
 ============
 
+[![Build Status](https://travis-ci.org/gridonic/PrinceXMLPhp?branch=master)](https://travis-ci.org/gridonic/PrinceXMLPhp) [![Latest Stable Version](https://poser.pugx.org/gridonic/princexml-php/v/stable.svg)](https://packagist.org/packages/gridonic/princexml-php) [![Total Downloads](https://poser.pugx.org/gridonic/princexml-php/downloads.svg)](https://packagist.org/packages/gridonic/princexml-php) [![License](https://poser.pugx.org/gridonic/princexml-php/license.svg)](https://packagist.org/packages/gridonic/princexml-php)
+
 [PrinceXML PHP5 wrapper](http://www.princexml.com/download/wrappers), converted to follow PSR-0 conventions.
 
 Fetch
