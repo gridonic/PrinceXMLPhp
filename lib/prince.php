@@ -65,7 +65,7 @@ class Prince
 	$this->encryptInfo = '';
     }
 
-
+	
     // Add a CSS style sheet that will be applied to each document.
     // cssPath: The filename of the CSS style sheet.
     public function addStyleSheet($cssPath)
@@ -91,34 +91,34 @@ class Prince
     {
 	$this->scripts = '';
     }
-
+    
     //Add a file attachment that will be attached to the PDF file
     //filePath: The filename of the file attachment.
     public function addFileAttachment($filePath)
     {
     	$this->fileAttachments .= '--attach=' . '"' . $filePath .  '" ';
     }
-
+    
     //Clear all of the file attachments.
     public function clearFileAttachments()
     {
     	$this->fileAttachments = '';
     }
-
+    
     //Specify the license file.
     //file: The filename of the license file.
     public function setLicenseFile($file)
     {
     	$this->licenseFile = $file;
     }
-
+    
     //Specify the license key.
     //key: The license key
     public function setLicenseKey($key)
     {
     	$this->licenseKey = $key;
     }
-
+    
     //Specify the input type of the document.
     //inputType: Can take a value of : "xml", "html" or "auto".
     public function setInputType($inputType)
@@ -126,7 +126,7 @@ class Prince
     	$this->inputType = $inputType;
     }
 
-    // Specify whether JavaScript found in documents should be run.
+    // Specify whether JavaScript found in documents should be run. 
     // js: True if document scripts should be run.
     public function setJavaScript($js)
     {
@@ -177,38 +177,38 @@ class Prince
     {
 	$this->httpUser = $this->cmdlineArgEscape($user);
     }
-
+    
     // Specify a password to use when fetching remote resources over HTTP.
     // password: The password to use for basic HTTP authentication.
     public function setHttpPassword($password)
     {
 	$this->httpPassword = $this->cmdlineArgEscape($password);
     }
-
+    
     //Specify the URL for the HTTP proxy server, if needed.
     //proxy: The URL for the HTTP proxy server.
     public function setHttpProxy($proxy)
     {
     	$this->httpProxy = $proxy;
     }
-
+    
     //Specify whether to disable SSL verification.
     //insecure: If set to true, SSL verification is disabled. (not recommended)
     public function setInsecure($insecure)
     {
     	$this->insecure = $insecure;
     }
-
+    
     //Specify the root directory for absolute filenames. This can be used
     //when converting a local file that uses absolute paths to refer to web
-    //resources. For example, /images/logo.jpg can be
+    //resources. For example, /images/logo.jpg can be 
     //rewritten to /usr/share/images/logo.jpg by specifying "/usr/share" as the root.
     //fileRoot: The path to prepend to absolute filenames.
     public function setFileRoot($fileRoot)
     {
     	$this->fileRoot = $fileRoot;
     }
-
+	
     // Specify whether fonts should be embedded in the output PDF file. Fonts
     // will be embedded by default unless explicitly disabled.
     // embedFonts: False to disable PDF font embedding.
@@ -313,17 +313,17 @@ class Prince
 	{
             $this->encryptInfo .= '--disallow-print ';
 	}
-
+	    
         if ($disallowModify)
 	{
             $this->encryptInfo .= '--disallow-modify ';
 	}
-
+	    
         if ($disallowCopy)
 	{
             $this->encryptInfo .= '--disallow-copy ';
 	}
-
+	    
         if ($disallowAnnotate)
 	{
             $this->encryptInfo .= '--disallow-annotate ';
@@ -342,11 +342,11 @@ class Prince
     {
 	$pathAndArgs = $this->getCommandLine();
 	$pathAndArgs .= '"' . $xmlPath . '"';
-
+   
 	return $this->convert_internal_file_to_file($pathAndArgs, $msgs);
 
     }
-
+    
     // Convert an XML or HTML file to a PDF file.
     // xmlPath: The filename of the input XML or HTML document.
     // pdfPath: The filename of the output PDF file.
@@ -356,10 +356,10 @@ class Prince
     {
 	$pathAndArgs = $this->getCommandLine();
 	$pathAndArgs .= '"' . $xmlPath . '" -o "' . $pdfPath . '"';
-
+	    
         return $this->convert_internal_file_to_file($pathAndArgs, $msgs);
     }
-
+    
     //Convert multiple XML or HTML files to a PDF file.
     // xmlPaths: An array of the input XML or HTML documents.
     // msgs: An optional array in which to return error and warning messages.
@@ -367,16 +367,16 @@ class Prince
     public function convert_multiple_files($xmlPaths, $pdfPath, &$msgs = array())
     {
     	$pathAndArgs = $this->getCommandLine();
-
+    	
     	foreach($xmlPaths as $xmlPath)
     	{
   		$pathAndArgs .= '"' . $xmlPath . '" ';
     	}
     	$pathAndArgs .= '-o "' . $pdfPath . '"';
-
+  
   	 return $this->convert_internal_file_to_file($pathAndArgs, $msgs);
     }
-
+    
     // Convert multiple XML or HTML files to a PDF file, which will be passed
     // through to the output buffer of the current PHP page.
     // xmlPaths: An array of the input XML or HTML documents.
@@ -385,16 +385,16 @@ class Prince
     {
     	$pathAndArgs = $this->getCommandLine();
     	$pathAndArgs .= '--silent ';
-
+    	
     	foreach($xmlPaths as $xmlPath)
     	{
   		$pathAndArgs .= '"' . $xmlPath . '" ';
     	}
     	$pathAndArgs .= '-o -';
-
+    	
     	 return $this->convert_internal_file_to_passthru($pathAndArgs);
     }
-
+    
     // Convert an XML or HTML file to a PDF file, which will be passed
     // through to the output buffer of the current PHP page.
     // xmlPath: The filename of the input XML or HTML document.
@@ -403,10 +403,10 @@ class Prince
     {
 	$pathAndArgs = $this->getCommandLine();
 	$pathAndArgs .= '--silent "' . $xmlPath . '" -o -';
-
+	    
         return $this->convert_internal_file_to_passthru($pathAndArgs);
     }
-
+    
     // Convert an XML or HTML string to a PDF file, which will be passed
     // through to the output buffer of the current PHP page.
     // xmlString: A string containing an XML or HTML document.
@@ -415,10 +415,10 @@ class Prince
     {
 	$pathAndArgs = $this->getCommandLine();
 	$pathAndArgs .= '--silent -';
-
+	    
         return $this->convert_internal_string_to_passthru($pathAndArgs, $xmlString);
     }
-
+    
     // Convert an XML or HTML string to a PDF file.
     // xmlString: A string containing an XML or HTML document.
     // pdfPath: The filename of the output PDF file.
@@ -428,7 +428,7 @@ class Prince
     {
 	$pathAndArgs = $this->getCommandLine();
 	$pathAndArgs .= ' - -o "' . $pdfPath . '"';
-
+	    
         return $this->convert_internal_string_to_file($pathAndArgs, $xmlString, $msgs);
     }
 
@@ -486,12 +486,12 @@ class Prince
 	{
 	    $cmdline .= '--http-password="' . $this->httpPassword . '" ';
 	}
-
+	
 	if($this->httpProxy != '')
 	{
 		$cmdline .= '--http-proxy="' . $this->httpProxy . '" ';
 	}
-
+	
 	if($this->insecure)
 	{
 		$cmdline .= '--insecure ';
@@ -506,17 +506,17 @@ class Prince
 	{
 		 $cmdline .= '--fileroot="' . $this->fileRoot . '" ';
 	}
-
+	
 	if($this->licenseFile != '')
 	{
 		$cmdline .= '--license-file="' . $this->licenseFile . '" ';
 	}
-
+	
 	if($this->licenseKey != '')
 	{
 		$cmdline .= '--license-key="' . $this->licenseKey . '" ';
 	}
-
+	
 	if ($this->embedFonts == false)
 	{
 	    $cmdline .= '--no-embed-fonts ';
@@ -577,9 +577,9 @@ class Prince
 				1 => array("pipe", "w"),
 				2 => array("pipe", "w")
 				);
-
+	
 	$process = proc_open($pathAndArgs, $descriptorspec, $pipes, NULL, NULL, array('bypass_shell' => TRUE));
-
+	
 	if (is_resource($process))
 	{
 	    $result = $this->readMessages($pipes[2], $msgs);
@@ -587,7 +587,7 @@ class Prince
 	    fclose($pipes[0]);
 	    fclose($pipes[1]);
 	    fclose($pipes[2]);
-
+	    
 	    proc_close($process);
 
 	    return ($result == 'success');
@@ -605,9 +605,9 @@ class Prince
 			    1 => array("pipe", "w"),
 			    2 => array("pipe", "w")
 			    );
-
+	
 	$process = proc_open($pathAndArgs, $descriptorspec, $pipes, NULL, NULL, array('bypass_shell' => TRUE));
-
+	
 	if (is_resource($process))
 	{
 	    fwrite($pipes[0], $xmlString);
@@ -615,9 +615,9 @@ class Prince
 	    fclose($pipes[1]);
 
 	    $result = $this->readMessages($pipes[2], $msgs);
-
+	    
 	    fclose($pipes[2]);
-
+	
 	    proc_close($process);
 
 	    return ($result == 'success');
@@ -635,9 +635,9 @@ class Prince
 			    1 => array("pipe", "w"),
 			    2 => array("pipe", "w")
 			    );
-
+	
 	$process = proc_open($pathAndArgs, $descriptorspec, $pipes, NULL, NULL, array('bypass_shell' => TRUE));
-
+	
 	if (is_resource($process))
 	{
 	    fclose($pipes[0]);
@@ -645,9 +645,9 @@ class Prince
 	    fclose($pipes[1]);
 
 	    $result = $this->readMessages($pipes[2], $msgs);
-
+	    
 	    fclose($pipes[2]);
-
+	
 	    proc_close($process);
 
 	    return ($result == 'success');
@@ -665,9 +665,9 @@ class Prince
 			    1 => array("pipe", "w"),
 			    2 => array("pipe", "w")
 			    );
-
+	
 	$process = proc_open($pathAndArgs, $descriptorspec, $pipes, NULL, NULL, array('bypass_shell' => TRUE));
-
+	
 	if (is_resource($process))
 	{
 	    fwrite($pipes[0], $xmlString);
@@ -676,9 +676,9 @@ class Prince
 	    fclose($pipes[1]);
 
 	    $result = $this->readMessages($pipes[2], $msgs);
-
+	    
 	    fclose($pipes[2]);
-
+	
 	    proc_close($process);
 
 	    return ($result == 'success');
@@ -694,12 +694,12 @@ class Prince
 	while (!feof($pipe))
 	{
 	    $line = fgets($pipe);
-
+	    
 	    if ($line != false)
 	    {
 		$msgtag = substr($line, 0, 4);
 		$msgbody = rtrim(substr($line, 4));
-
+		
 		if ($msgtag == 'fin|')
 		{
 		    return $msgbody;
@@ -720,18 +720,18 @@ class Prince
 		}
 	    }
 	}
-
+	
 	return '';
     }
-
-
+    
+    
     	//Puts double-quotes around space(s) in file path,
     	//and also around semicolon(;), comma(,), ampersand(&), up-arrow(^) and parentheses.
 	//This is needed if the file path is used in a command line.
 	private function addDoubleQuotes($str)
 	{
 		$len = strlen($str);
-
+		
 		$outputStr = '';
 		$numWeirdChars = 0;
 		$subStrStart = 0;
@@ -757,33 +757,33 @@ class Prince
 				if($numWeirdChars > 0)
 				{
 					$outputStr .=  chr(34) . substr($str, $weirdCharsStart, $numWeirdChars) . chr(34);
-
+				
 					$subStrStart = $i;
 					$numWeirdChars = 0;
 				}
 			}
 		}
 		$outputStr .= substr($str, $subStrStart, ($i - $subStrStart));
-
+		
 		return $outputStr;
 	}
-
+	
 	private function cmdlineArgEscape($argStr)
 	{
 		return $this->cmdlineArgEscape2($this->cmdlineArgEscape1($argStr));
 	}
-
+	
 	//In the input string $argStr, a double quote with zero or more preceding backslash(es)
 	//will be replaced with: n*backslash + doublequote => (2*n+1)*backslash + doublequote
 	private function cmdlineArgEscape1($argStr)
 	{
 		//chr(34) is character double quote ( " ), chr(92) is character backslash ( \ ).
 		$len = strlen($argStr);
-
+		
 		$outputStr = '';
 		$numSlashes = 0;
 		$subStrStart = 0;
-
+		
 		for($i = 0; $i < $len; $i++)
 		{
 			if($argStr[$i] == chr(34))
@@ -802,29 +802,29 @@ class Prince
 						break;
 					}
 				}
-
+				
 				$outputStr .= substr($argStr, $subStrStart, ($i - $numSlashes - $subStrStart));
-
+				
 				for($k = 0; $k < $numSlashes; $k++)
 				{
 					$outputStr .= chr(92) . chr(92);
 				}
 				$outputStr  .= chr(92) . chr(34);
-
+				
 				$subStrStart = $i + 1;
 			}
 		}
 		$outputStr .= substr($argStr, $subStrStart, ($i - $subStrStart));
-
+		
 		return $outputStr;
 	}
-
+	
 	//Double the number of trailing backslash(es):	n*trailing backslash => (2*n)*trailing backslash.
 	private function cmdlineArgEscape2($argStr)
 	{
 		//chr(92) is character backslash ( \ ).
 		$len = strlen($argStr);
-
+		
 		$numTrailingSlashes = 0;
 		for($i = ($len - 1); $i  >= 0; $i--)
 		{
@@ -837,15 +837,15 @@ class Prince
 				break;
 			}
 		}
-
+		
 		while($numTrailingSlashes > 0)
 		{
 			$argStr .= chr(92);
 			$numTrailingSlashes -= 1;
 		}
-
+		
 		return $argStr;
 	}
-
+	
 }
 ?>
