@@ -33,6 +33,7 @@ class Prince
     private $pdfCreator;
     private $encrypt;
     private $encryptInfo;
+	private $noParallelDownloads;
 
     public function __construct($exePath)
     {
@@ -63,6 +64,7 @@ class Prince
 	$this->pdfCreator = '';
 	$this->encrypt = false;
 	$this->encryptInfo = '';
+    $this->noParallelDownloads = false;
     }
 
 
@@ -198,6 +200,13 @@ class Prince
     {
     	$this->insecure = $insecure;
     }
+
+	//Specify whether parallel download of resources within the document are allowed
+	//This has been known to fix issues where documents with a high number of resources
+	//does not include all of them.
+	public function setParallelDownloads( $parallelDownloads ) {
+		$this->noParallelDownloads = !$parallelDownloads;
+	}
 
     //Specify the root directory for absolute filenames. This can be used
     //when converting a local file that uses absolute paths to refer to web
@@ -566,6 +575,11 @@ class Prince
 	{
 	    $cmdline .= '--encrypt ' . $this->encryptInfo;
 	}
+
+    if ($this->noParallelDownloads)
+    {
+	    $cmdline .= '--no-parallel-downloads ';
+    }
 
 	return $cmdline;
     }
