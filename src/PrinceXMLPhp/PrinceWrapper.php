@@ -16,5 +16,22 @@ use \Prince;
 
 class PrinceWrapper extends Prince
 {
+    public function __construct($exePath = null)
+    {
+        $basename = 'prince';
+        if (!$exePath) {
+            exec('which '.$basename, $output, $returnVar);
+            if ($returnVar === 0) {
+                $exePath = $output[0];
+            } else {
+                throw new PrinceXmlException('Unable to locate '.$basename);
+            }
+        }
 
+        if (!is_executable($exePath)) {
+            throw new PrinceXmlException($basename.' executable is not executable');
+        }
+
+        parent::__construct($exePath);
+    }
 }
