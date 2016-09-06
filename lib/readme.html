@@ -81,11 +81,20 @@ installation.
 <li><a href="#sethttpuser"><code>setHttpUser</code></a></li>
 <li><a href="#sethttppassword"><code>setHttpPassword</code></a></li>
 <li><a href="#sethttpproxy"><code>setHttpProxy</code></a></li>
+<li><a href="#sethttptimeout"><code>setHttpTimeout</code></a></li>
 <li><a href="#setinsecure"><code>setInsecure</code></a></li>
 <li><a href="#setfileroot"><code>setFileRoot</code></a></li>
 <li><a href="#setembedfonts"><code>setEmbedFonts</code></a></li>
 <li><a href="#setsubsetfonts"><code>setSubsetFonts</code></a></li>
-<li><a href="#setartificialfonts"><code>setArtificialFonts</code></a></li>
+<li><a href="#setnoartificialfonts"><code>setNoArtificialFonts</code></a></li>
+<li><a href="#setauthmethod"><code>setAuthMethod</code></a></li>
+<li><a href="#setauthuser"><code>setAuthUser</code></a></li>
+<li><a href="#setauthpassword"><code>setAuthPassword</code></a></li>
+<li><a href="#setauthserver"><code>setAuthServer</code></a></li>
+<li><a href="#setauthscheme"><code>setAuthScheme</code></a></li>
+<li><a href="#setnoauthpreemptive"><code>setNoAuthPreemptive</code></a></li>
+<li><a href="#setpagesize"><code>setPageSize</code></a></li>
+<li><a href="#setpagemargin"><code>setPageMargin</code></a></li>
 <li><a href="#setcompress"><code>setCompress</code></a></li>
 <li><a href="#setpdftitle"><code>setPDFTitle</code></a></li>
 <li><a href="#setpdfsubject"><code>setPDFSubject</code></a></li>
@@ -94,6 +103,7 @@ installation.
 <li><a href="#setpdfcreator"><code>setPDFCreator</code></a></li>
 <li><a href="#setencrypt"><code>setEncrypt</code></a></li>
 <li><a href="#setencryptinfo"><code>setEncryptInfo</code></a></li>
+<li><a href="#setoptions"><code>setOptions</code></a></li>
 </ul>
 
 <hr/>
@@ -209,7 +219,7 @@ location (eg. a filename) and the message text.</dd>
 <a name="convert_file_to_passthru">
 
 <pre>
-public function convert_file_to_passthru($xmlPath)
+public function convert_file_to_passthru($xmlPath, &amp;$msgs = array())
 </pre>
 
 <p>
@@ -217,15 +227,15 @@ Convert an XML or HTML file to a PDF file, which will be passed
 through to the output buffer of the current PHP page.
 Returns true if a PDF file was generated successfully.
 </p>
-<p>
-Currently there is no mechanism to retrieve error/warning messages when using
-this convert method. However, the <code>setLog</code> function can be used to
-direct messages to an external file.
-</p>
 
 <dl>
 <dt><code>xmlPath</code></dt>
 <dd>The filename of the input XML or HTML document.</dd>
+<dt><code>msgs</code></dt>
+<dd>An optional array in which to return error and warning messages. Each
+message is returned as an array of three strings: the message code
+(<code>'err'</code>, <code>'wrn'</code> or <code>'inf'</code>), the message
+location (eg. a filename) and the message text.</dd>
 <dt><code>returns</code></dt>
 <dd>True if a PDF file was generated successfully, false otherwise.</dd>
 </dl>
@@ -249,7 +259,7 @@ user to save the PDF file instead of displaying it.
 <a name="convert_multiple_files_to_passthru">
 
 <pre>
-public function convert_multiple_files_to_passthru($xmlPaths)
+public function convert_multiple_files_to_passthru($xmlPaths, &amp;$msgs = array())
 </pre>
 
 <p>
@@ -257,15 +267,15 @@ Convert multiple XML or HTML files to a PDF file, which will be passed
 through to the output buffer of the current PHP page.
 Returns true if a PDF file was generated successfully.
 </p>
-<p>
-Currently there is no mechanism to retrieve error/warning messages when using
-this convert method. However, the <code>setLog</code> function can be used to
-direct messages to an external file.
-</p>
 
 <dl>
 <dt><code>xmlPaths</code></dt>
 <dd>An array of the input XML or HTML documents.</dd>
+<dt><code>msgs</code></dt>
+<dd>An optional array in which to return error and warning messages. Each
+message is returned as an array of three strings: the message code
+(<code>'err'</code>, <code>'wrn'</code> or <code>'inf'</code>), the message
+location (eg. a filename) and the message text.</dd>
 <dt><code>returns</code></dt>
 <dd>True if a PDF file was generated successfully, false otherwise.</dd>
 </dl>
@@ -289,7 +299,7 @@ user to save the PDF file instead of displaying it.
 <a name="convert_string_to_passthru">
 
 <pre>
-public function convert_string_to_passthru($xmlString)
+public function convert_string_to_passthru($xmlString, &amp;$msgs = array())
 </pre>
 
 <p>
@@ -297,15 +307,15 @@ Convert an XML or HTML string to a PDF file, which will be passed
 through to the output buffer of the current PHP page.
 Returns true if a PDF file was generated successfully.
 </p>
-<p>
-Currently there is no mechanism to retrieve error/warning messages when using
-this convert method. However, the <code>setLog</code> function can be used to
-direct messages to an external file.
-</p>
 
 <dl>
 <dt><code>xmlString</code></dt>
 <dd>A string containing an XML or HTML document.</dd>
+<dt><code>msgs</code></dt>
+<dd>An optional array in which to return error and warning messages. Each
+message is returned as an array of three strings: the message code
+(<code>'err'</code>, <code>'wrn'</code> or <code>'inf'</code>), the message
+location (eg. a filename) and the message text.</dd>
 <dt><code>returns</code></dt>
 <dd>True if a PDF file was generated successfully, false otherwise.</dd>
 </dl>
@@ -614,6 +624,23 @@ Specify the URL for the HTTP proxy server, if needed.
 
 <hr>
 
+<a name="sethttptimeout">
+
+<pre>
+public function setHttpTimeout($timeout)
+</pre>
+
+<p>
+Specify the timeout for HTTP requests.
+</p>
+
+<dl>
+<dt><code>timeout</code></dt>
+<dd>The HTTP timeout in seconds.</dd>
+</dl>
+
+<hr>
+
 <a name="setinsecure">
 
 <pre>
@@ -686,10 +713,10 @@ will be subset by default unless explicitly disabled.
 
 <hr>
 
-<a name="setartificialfonts">
+<a name="setnoartificialfonts">
 
 <pre>
-public function setArtificialFonts($artificialFonts)
+public function setNoArtificialFonts($noArtificialFonts)
 </pre>
 
 <p>
@@ -697,8 +724,136 @@ Specify whether artificial bold/italic fonts should be generated if
 necessary. Artificial fonts are enabled by default.
 </p>
 <dl>
-<dt><code>artificialFonts</code></dt>
-<dd>False to disable artificial bold/italic fonts.</dd>
+<dt><code>noArtificialFonts</code></dt>
+<dd>True to disable artificial bold/italic fonts.</dd>
+</dl>
+
+<hr>
+
+<a name="setauthmethod">
+
+<pre>
+public function setAuthMethod($authMethod)
+</pre>
+
+<p>
+Specify HTTP authentication methods. (basic, digest, ntlm, negotiate)
+</p>
+<dl>
+<dt><code>authMethod</code></dt>
+<dd>The authentication method to use.</dd>
+</dl>
+
+<hr>
+
+<a name="setauthuser">
+
+<pre>
+public function setAuthUser($authUser)
+</pre>
+
+<p>
+Specify username for HTTP authentication.
+</p>
+<dl>
+<dt><code>authUser</code></dt>
+<dd>The authentication username to use.</dd>
+</dl>
+
+<hr>
+
+<a name="setauthpassword">
+
+<pre>
+public function setAuthPassword($authPassword)
+</pre>
+
+<p>
+Specify password for HTTP authentication.
+</p>
+<dl>
+<dt><code>authPassword</code></dt>
+<dd>The authentication password to use.</dd>
+</dl>
+
+<hr>
+
+<a name="setauthserver">
+
+<pre>
+public function setAuthServer($authServer)
+</pre>
+
+<p>
+Only send USER:PASS to this server.
+</p>
+<dl>
+<dt><code>authServer</code></dt>
+<dd>The server to send USER:PASS.</dd>
+</dl>
+
+<hr>
+
+<a name="setauthscheme">
+
+<pre>
+public function setAuthScheme($authScheme)
+</pre>
+
+<p>
+Only send USER:PASS for this scheme. (HTTP, HTTPS)
+</p>
+<dl>
+<dt><code>authScheme</code></dt>
+<dd>The scheme to use for authentication.</dd>
+</dl>
+
+<hr>
+
+<a name="setnoauthpreemptive">
+
+<pre>
+public function setNoAuthPreemptive($noAuthPreemptive)
+</pre>
+
+<p>
+Do not authenticate with named servers until asked.
+</p>
+<dl>
+<dt><code>noAuthPreemptive</code></dt>
+<dd>True to disable authentication preemptive.</dd>
+</dl>
+
+<hr>
+
+<a name="setpagesize">
+
+<pre>
+public function setPageSize($pageSize)
+</pre>
+
+<p>
+Specify the page size (eg. A4).
+</p>
+<dl>
+<dt><code>pageSize</code></dt>
+<dd>The page size to use.</dd>
+</dl>
+
+<hr>
+
+<a name="setpagemargin">
+
+<pre>
+public function setPageMargin($pageMargin)
+</pre>
+
+<p>
+Specify the page margin (eg. 20mm).
+</p>
+<dl>
+<dt><code>pageMargin</code></dt>
+<dd>The page magin to use.</dd>
 </dl>
 
 <hr>
@@ -814,6 +969,22 @@ method for encryption information to be applied.
 <dd>True to disallow copying from the PDF file.</dd>
 <dt><code>disallowAnnotate</code></dt>
 <dd>True to disallow annotation of the PDF file.</dd>
+</dl>
+
+<hr>
+
+<a name="setoptions">
+
+<pre>
+public function setOptions($options)
+</pre>
+
+<p>
+Set other options.
+</p>
+<dl>
+<dt><code>options</code></dt>
+<dd>Other options to set.</dd>
 </dl>
 
 <hr>
