@@ -4,6 +4,8 @@
 // Copyright 2005-2014 YesLogic Pty. Ltd.
 // http://www.princexml.com
 
+use PrinceXMLPhp\Types\PdfProfile;
+
 class Prince
 {
     private $exePath;
@@ -334,11 +336,15 @@ class Prince
     /**
      * Set optional optional PDF profiles, which can be selected
      * @see https://www.princexml.com/doc/pdf-profiles
+     * @example $princeWrapper->setProfile(Profile::createX32002());
      * @param String $profile
+     * @return self
      */
-    public function setProfile($profile)
+    public function setProfile(PdfProfile $profile)
     {
-        $this->profile = $profile;
+        $this->profile = sprintf('%s', $profile);
+
+        return $this;
     }
 
     // Convert an XML or HTML file to a PDF file.
