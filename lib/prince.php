@@ -337,7 +337,7 @@ class Prince
      * Set optional optional PDF profiles, which can be selected
      * @see https://www.princexml.com/doc/pdf-profiles
      * @example $princeWrapper->setProfile(Profile::createX32002());
-     * @param String $profile
+     * @param PdfProfile $profile
      * @return self
      */
     public function setProfile(PdfProfile $profile)
