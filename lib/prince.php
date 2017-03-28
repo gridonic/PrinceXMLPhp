@@ -33,6 +33,7 @@ class Prince
     private $pdfCreator;
     private $encrypt;
     private $encryptInfo;
+    private $profile;
 
     public function __construct($exePath)
     {
@@ -330,7 +331,15 @@ class Prince
 	}
     }
 
-
+    /**
+     * Set optional optional PDF profiles, which can be selected
+     * @see https://www.princexml.com/doc/pdf-profiles
+     * @param String $profile
+     */
+    public function setProfile($profile)
+    {
+        $this->profile = $profile;
+    }
 
     // Convert an XML or HTML file to a PDF file.
     // The name of the output PDF file will be the same as the name of the
@@ -566,6 +575,11 @@ class Prince
 	{
 	    $cmdline .= '--encrypt ' . $this->encryptInfo;
 	}
+
+	if( $this->profile != '' )
+    {
+        $cmdline .= '--profile="'. $this->profile .'" ';
+    }
 
 	return $cmdline;
     }
