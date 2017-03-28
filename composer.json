@@ -1,5 +1,5 @@
 {
-    "name": "vrsmedia/princexml-php",
+    "name": "gridonic/princexml-php",
     "description": "PrinceXML PHP5 wrapper converted to follow the PSR-0 standard.",
     "keywords": ["princexml", "xml"],
     "license": "MIT",
