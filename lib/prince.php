@@ -4,6 +4,8 @@
 // Copyright 2005-2014 YesLogic Pty. Ltd.
 // http://www.princexml.com
 
+use PrinceXMLPhp\Types\PdfProfile;
+
 class Prince
 {
     private $exePath;
@@ -33,6 +35,7 @@ class Prince
     private $pdfCreator;
     private $encrypt;
     private $encryptInfo;
+    private $profile;
 
     public function __construct($exePath)
     {
@@ -330,7 +333,19 @@ class Prince
 	}
     }
 
+    /**
+     * Set optional optional PDF profiles
+     * @see https://www.princexml.com/doc/pdf-profiles
+     * @example $princeWrapper->setProfile(PdfProfile::createX32002());
+     * @param PdfProfile $profile
+     * @return self
+     */
+    public function setProfile(PdfProfile $profile)
+    {
+        $this->profile = sprintf('%s', $profile);
 
+        return $this;
+    }
 
     // Convert an XML or HTML file to a PDF file.
     // The name of the output PDF file will be the same as the name of the
@@ -566,6 +581,11 @@ class Prince
 	{
 	    $cmdline .= '--encrypt ' . $this->encryptInfo;
 	}
+
+	if( $this->profile != '' )
+    {
+        $cmdline .= '--profile="'. $this->profile .'" ';
+    }
 
 	return $cmdline;
     }

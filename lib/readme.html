@@ -94,6 +94,7 @@ installation.
 <li><a href="#setpdfcreator"><code>setPDFCreator</code></a></li>
 <li><a href="#setencrypt"><code>setEncrypt</code></a></li>
 <li><a href="#setencryptinfo"><code>setEncryptInfo</code></a></li>
+<li><a href="#setProfile"><code>setProfile</code></a></li>
 </ul>
 
 <hr/>
@@ -814,6 +815,32 @@ method for encryption information to be applied.
 <dd>True to disallow copying from the PDF file.</dd>
 <dt><code>disallowAnnotate</code></dt>
 <dd>True to disallow annotation of the PDF file.</dd>
+</dl>
+
+<hr>
+
+<a name="setprofile">
+
+<pre>
+public function setProfile(PdfProfile $profile)
+</pre>
+
+<p>
+    Set optional pdf profile
+    Prince supports optional PDF profiles, which can be selected. Available profiles are:
+    PDF/A-1b,
+    PDF/A-3b,
+    PDF/X-1a:2001,
+    PDF/X-1a:2003,
+    PDF/X-3:2002,
+    PDF/X-3:2003,
+    PDF/X-4
+    More information <a href="https://www.princexml.com/doc/pdf-profiles">here</a>.
+</p>
+
+<dl>
+    <dt><code>PdfProfile $profile</code></dt>
+    <dd>Pass a PdfProfile object to set one of the specific profiles.</dd>
 </dl>
 
 <hr>
