@@ -49,4 +49,4 @@ License
 -------
 
 The PrinceXMLPhp wrapper is licensed under the MIT license. The original library from is
-taken from the [Prince Website](http://www.princexml.com/download/wrappers/) and subject to the license by YesLogic Pty. Ltd.
+taken from the [Prince Website](http://www.princexml.com/download/wrappers/) and subject to the license by YesLogic Pty. Ltd. A Github repository for the original library can be found at https://github.com/yeslogic/prince-tools.
