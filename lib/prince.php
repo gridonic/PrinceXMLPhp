@@ -16,30 +16,49 @@ class Prince
     private $javascript;
     private $baseURL;
     private $doXInclude;
-    private $httpUser;
-    private $httpPassword;
+    private $xmlExternalEntities;
+    private $noLocalFiles;
+    private $remaps;
+    private $noNetwork;
+    private $authUser;
+    private $authPassword;
+    private $authServer;
+    private $authScheme;
+    private $authMethod;
+    private $noAuthPreemptive;
     private $httpProxy;
     private $httpTimeout;
+    private $cookie;
+    private $cookieJar;
+    private $sslCaCert;
+    private $sslCaPath;
+    private $sslVersion;
     private $insecure;
+    private $noParallelDownloads;
     private $logFile;
+    private $verbose;
+    private $debug;
+    private $noWarnCss;
     private $fileRoot;
     private $embedFonts;
     private $subsetFonts;
     private $noArtificialFonts;
+    private $forceIdentityEncoding;
     private $compress;
+    private $pdfOutputIntent;
+    private $convertColors;
+    private $fallbackCmykProfile;
+    private $pdfProfile;
     private $pdfTitle;
     private $pdfSubject;
     private $pdfAuthor;
     private $pdfKeywords;
     private $pdfCreator;
-    private $authMethod;
-    private $authUser;
-    private $authPassword;
-    private $authServer;
-    private $authScheme;
-    private $noAuthPreemptive;
+    private $media;
     private $pageSize;
     private $pageMargin;
+    private $noAuthorStyle;
+    private $noDefaultStyle;
     private $encrypt;
     private $encryptInfo;
     private $options;
@@ -55,31 +74,50 @@ class Prince
         $this->inputType = 'auto';
         $this->javascript = false;
         $this->baseURL = '';
-        $this->doXInclude = true;
-        $this->httpUser = '';
-        $this->httpPassword = '';
+        $this->doXInclude = false;
+        $this->xmlExternalEntities = false;
+        $this->noLocalFiles = false;
+        $this->remaps = '';
+        $this->noNetwork = false;
+        $this->authUser = '';
+        $this->authPassword = '';
+        $this->authServer = '';
+        $this->authScheme = '';
+        $this->authMethod = '';
+        $this->noAuthPreemptive = false;
         $this->httpProxy = '';
         $this->httpTimeout = '';
+        $this->cookie = '';
+        $this->cookieJar = '';
+        $this->sslCaCert = '';
+        $this->sslCaPath = '';
+        $this->sslVersion = '';
         $this->insecure = false;
+        $this->noParallelDownloads = false;
         $this->logFile = '';
+        $this->verbose = false;
+        $this->debug = false;
+        $this->noWarnCss = false;
         $this->fileRoot = '';
         $this->embedFonts = true;
         $this->subsetFonts = true;
         $this->noArtificialFonts = false;
+        $this->forceIdentityEncoding = false;
         $this->compress = true;
+        $this->pdfOutputIntent = '';
+        $this->convertColors = false;
+        $this->fallbackCmykProfile = '';
+        $this->pdfProfile = '';
         $this->pdfTitle = '';
         $this->pdfSubject = '';
         $this->pdfAuthor = '';
         $this->pdfKeywords = '';
         $this->pdfCreator = '';
-        $this->authMethod = '';
-        $this->authUser = '';
-        $this->authPassword = '';
-        $this->authServer = '';
-        $this->authScheme = '';
-        $this->noAuthPreemptive = false;
+        $this->media = '';
         $this->pageSize = '';
         $this->pageMargin = '';
+        $this->noAuthorStyle = false;
+        $this->noDefaultStyle = false;
         $this->encrypt = false;
         $this->encryptInfo = '';
         $this->options = '';
@@ -110,34 +148,34 @@ class Prince
     {
         $this->scripts = '';
     }
-    
+
     //Add a file attachment that will be attached to the PDF file
     //filePath: The filename of the file attachment.
     public function addFileAttachment($filePath)
     {
         $this->fileAttachments .= '--attach=' . '"' . $filePath .  '" ';
     }
-    
+
     //Clear all of the file attachments.
     public function clearFileAttachments()
     {
         $this->fileAttachments = '';
     }
-    
+
     //Specify the license file.
     //file: The filename of the license file.
     public function setLicenseFile($file)
     {
         $this->licenseFile = $file;
     }
-    
+
     //Specify the license key.
     //key: The license key
     public function setLicenseKey($key)
     {
         $this->licenseKey = $key;
     }
-    
+
     //Specify the input type of the document.
     //inputType: Can take a value of : "xml", "html" or "auto".
     public function setInputType($inputType)
@@ -145,7 +183,7 @@ class Prince
         $this->inputType = $inputType;
     }
 
-    // Specify whether JavaScript found in documents should be run. 
+    // Specify whether JavaScript found in documents should be run.
     // js: True if document scripts should be run.
     public function setJavaScript($js)
     {
@@ -158,11 +196,11 @@ class Prince
     {
         if($html)
         {
-                $this->inputType = "html";
+            $this->inputType = "html";
         }
         else
         {
-                $this->inputType = "xml";
+            $this->inputType = "xml";
         }
     }
 
@@ -172,6 +210,24 @@ class Prince
     public function setLog($logFile)
     {
         $this->logFile = $logFile;
+    }
+
+    //Specify whether to log informative messages.
+    public function setVerbose($verbose)
+    {
+        $this->verbose = $verbose;
+    }
+
+    //Specify whether to log debug messages.
+    public function setDebug($debug)
+    {
+        $this->debug = $debug;
+    }
+
+    //Specify whether to warn about CSS.
+    public function setNoWarnCss($noWarnCss)
+    {
+        $this->noWarnCss = $noWarnCss;
     }
 
     // Specify the base URL of the input document.
@@ -190,20 +246,102 @@ class Prince
         $this->doXInclude = $xinclude;
     }
 
-    // Specify a username to use when fetching remote resources over HTTP.
-    // user: The username to use for basic HTTP authentication.
-    public function setHttpUser($user)
+    // Specifies whether XML external entities should be allowed to be used.
+    public function setXmlExternalEntities($xmlExternalEntities)
     {
-        $this->httpUser = $this->cmdlineArgEscape($user);
+        $this->xmlExternalEntities = $xmlExternalEntities ;
     }
-    
-    // Specify a password to use when fetching remote resources over HTTP.
-    // password: The password to use for basic HTTP authentication.
-    public function setHttpPassword($password)
+
+    //Specify whether to disable access to local files.
+    public function setNoLocalFiles($noLocalFiles)
     {
-        $this->httpPassword = $this->cmdlineArgEscape($password);
+        $this->noLocalFiles = $noLocalFiles;
     }
-    
+
+    // Add a mapping of URL prefix to a local directory.
+    public function addRemap($url, $dir)
+    {
+        $this->remaps .= '--remap="' . $url . '"="' . $dir . '" ';
+    }
+
+    // Clear all of the remaps.
+    public function clearRemaps()
+    {
+        $this->remaps = '';
+    }
+
+    // Specify thether to disable network access.
+    public function setNoNetwork($noNetwork)
+    {
+        $this->noNetwork = $noNetwork;
+    }
+
+    //Specify HTTP authentication methods. (basic, digest, ntlm, negotiate)
+    public function setAuthMethod($authMethod)
+    {
+        if(strcasecmp($authMethod, 'basic') == 0)
+        {
+            $this->authMethod = 'basic';
+        }
+        else if(strcasecmp($authMethod, 'digest') == 0)
+        {
+            $this->authMethod = 'digest';
+        }
+        else if(strcasecmp($authMethod, 'ntlm') == 0)
+        {
+            $this->authMethod = 'ntlm';
+        }
+        else if(strcasecmp($authMethod, 'negotiate') == 0)
+        {
+            $this->authMethod = 'negotiate';
+        }
+        else
+        {
+            $this->authMethod = '';
+        }
+    }
+
+    //Specify username for HTTP authentication.
+    public function setAuthUser($authUser)
+    {
+        $this->authUser = $this->cmdlineArgEscape($authUser);
+    }
+
+    //Specify password for HTTP authentication.
+    public function setAuthPassword($authPassword)
+    {
+        $this->authPassword = $this->cmdlineArgEscape($authPassword);
+    }
+
+    //Only send USER:PASS to this server.
+    public function setAuthServer($authServer)
+    {
+        $this->authServer = $authServer;
+    }
+
+    //Only send USER:PASS for this scheme. (HTTP, HTTPS)
+    public function setAuthScheme($authScheme)
+    {
+        if(strcasecmp($authScheme, 'http') == 0)
+        {
+            $this->authScheme = 'http';
+        }
+        else if(strcasecmp($authScheme, 'https') == 0)
+        {
+            $this->authScheme = 'https';
+        }
+        else
+        {
+            $this->authScheme = '';
+        }
+    }
+
+    //Do not authenticate with named servers until asked.
+    public function setNoAuthPreemptive($noAuthPreemptive)
+    {
+        $this->noAuthPreemptive = $noAuthPreemptive;
+    }
+
     //Specify the URL for the HTTP proxy server, if needed.
     //proxy: The URL for the HTTP proxy server.
     public function setHttpProxy($proxy)
@@ -211,11 +349,40 @@ class Prince
         $this->httpProxy = $proxy;
     }
 
-    //Specify the timeout for HTTP requests.
-    //timeout: The HTTP timeout in seconds.
+    //Specify the HTTP timeout in seconds.
     public function setHttpTimeout($timeout)
     {
         $this->httpTimeout = $timeout;
+    }
+
+    //Specify a Set-Cookie header value.
+    public function setCookie($cookie)
+    {
+        $this->cookie = $cookie;
+    }
+
+    //Specify a file containing HTTP cookies.
+    public function setCookieJar($cookieJar)
+    {
+        $this->cookieJar = $cookieJar;
+    }
+
+    //Specify an SSL certificate file.
+    public function setSslCaCert($sslCaCert)
+    {
+        $this->sslCaCert = $sslCaCert;
+    }
+
+    //Specify an SSL certificate directory.
+    public function setSslCaPath($sslCaPath)
+    {
+        $this->sslCaPath = $sslCaPath;
+    }
+
+    //Specify an SSL/TLS version to use.
+    public function setSslVersion($sslVersion)
+    {
+        $this->sslVersion = $sslVersion;
     }
 
     //Specify whether to disable SSL verification.
@@ -224,17 +391,24 @@ class Prince
     {
         $this->insecure = $insecure;
     }
-    
+
+    //Specify whether to disable disable parallel downloads.
+    //noParallelDownloads: If set to true, parallel downloads are disabled.
+    public function setNoParallelDownloads($noParallelDownloads)
+    {
+        $this->noParallelDownloads = $noParallelDownloads;
+    }
+
     //Specify the root directory for absolute filenames. This can be used
     //when converting a local file that uses absolute paths to refer to web
-    //resources. For example, /images/logo.jpg can be 
+    //resources. For example, /images/logo.jpg can be
     //rewritten to /usr/share/images/logo.jpg by specifying "/usr/share" as the root.
     //fileRoot: The path to prepend to absolute filenames.
     public function setFileRoot($fileRoot)
     {
         $this->fileRoot = $fileRoot;
     }
-        
+
     // Specify whether fonts should be embedded in the output PDF file. Fonts
     // will be embedded by default unless explicitly disabled.
     // embedFonts: False to disable PDF font embedding.
@@ -259,12 +433,39 @@ class Prince
         $this->noArtificialFonts = $noArtificialFonts;
     }
 
+    //Specify whether to use force identity encoding.
+    public function setForceIdentityEncoding($forceIdentityEncoding)
+    {
+        $this->forceIdentityEncoding = $forceIdentityEncoding;
+    }
+
     // Specify whether compression should be applied to the output PDF file.
     // Compression will be applied by default unless explicitly disabled.
     // compress: False to disable PDF compression.
     public function setCompress($compress)
     {
         $this->compress = $compress;
+    }
+
+    //Specify the ICC profile to use.
+    //Also optionally specify whether to convert colors to output intent color space.
+    //$pdfOutputIntent is the ICC profile to be used.
+    public function setPDFOutputIntent($pdfOutputIntent, $convertColors = false)
+    {
+        $this->pdfOutputIntent = $pdfOutputIntent;
+        $this->convertColors = $convertColors;
+    }
+
+    //Specify fallback ICC profile for uncalibrated CMYK.
+    public function setFallbackCmykProfile($fallbackCmykProfile)
+    {
+        $this->fallbackCmykProfile = $fallbackCmykProfile;
+    }
+
+    //Specify the PDF profile to use.
+    public function setPDFProfile($pdfProfile)
+    {
+        $this->pdfProfile = $pdfProfile;
     }
 
     // Specify the document title for PDF metadata.
@@ -285,94 +486,46 @@ class Prince
         $this->pdfAuthor = $pdfAuthor;
     }
 
-    // Specify the document keywords for PDF metadata.
+    //Specify the document keywords for PDF metadata.
     public function setPDFKeywords($pdfKeywords)
     {
         $this->pdfKeywords = $pdfKeywords;
     }
 
-    // Specify the document creator for PDF metadata.
+    //Specify the document creator for PDF metadata.
     public function setPDFCreator($pdfCreator)
     {
         $this->pdfCreator = $pdfCreator;
     }
-   
-    //Specify HTTP authentication methods. (basic, digest, ntlm, negotiate)
-    public function setAuthMethod($authMethod)
+
+    //Specify the media type (eg. print, screen).
+    public function setMedia($media)
     {
-    	  if(strcasecmp($authMethod, 'basic') == 0)
-    	  {
-   	  	$this->authMethod = 'basic';
-   	  }
-   	  else if(strcasecmp($authMethod, 'digest') == 0)
-   	  {
-   	  	$this->authMethod = 'digest';
-   	  }
-   	  else if(strcasecmp($authMethod, 'ntlm') == 0)
-   	  {
-   	  	$this->authMethod = 'ntlm';
-   	  } 
-   	  else if(strcasecmp($authMethod, 'negotiate') == 0)
-   	  {
-   	  	$this->authMethod = 'negotiate';
-   	  }
-   	  else
-   	  {
-   	  	$this->authMethod = '';
-   	  }
-    }
-    
-    //Specify username for HTTP authentication.
-    public function setAuthUser($authUser)
-    {
-    	 $this->authUser = $authUser;
-    }
-    
-    //Specify password for HTTP authentication.
-    public function setAuthPassword($authPassword)
-    {
-    	 $this->authPassword = $authPassword;
-    }
-    
-    //Only send USER:PASS to this server.
-    public function setAuthServer($authServer)
-    {
-       $this->authServer = $authServer;
-    }
-    
-    //Only send USER:PASS for this scheme. (HTTP, HTTPS)
-    public function setAuthScheme($authScheme)
-    {
-    	  if(strcasecmp($authScheme, 'http') == 0)
-    	  {
-    	 	$this->authScheme = 'http';
-    	  }
-    	  else if(strcasecmp($authScheme, 'https') == 0)
-    	  {
-    	 	$this->authScheme = 'https';
-    	  }
-    	  else
-    	  {
-    	 	$this->authScheme = '';
-    	  }
-    }
-    
-    //Do not authenticate with named servers until asked.
-    public function setNoAuthPreemptive($noAuthPreemptive)
-    {
-    	 $this->noAuthPreemptive = $noAuthPreemptive;
+        $this->media = $media;
     }
 
     //Specify the page size (eg. A4).
     public function setPageSize($pageSize)
     {
-    	 $this->pageSize = $pageSize;
+        $this->pageSize = $pageSize;
     }
-    
+
     //Specify the page margin (eg. 20mm).
     public function setPageMargin($pageMargin)
     {
-    	 $this->pageMargin = $pageMargin;
+        $this->pageMargin = $pageMargin;
+    }
+
+    //Specify whether to ignore author style sheets.
+    public function setNoAuthorStyle($noAuthorStyle)
+    {
+        $this->noAuthorStyle = $noAuthorStyle;
+    }
+
+    //Specify whether to ignore default style sheets.
+    public function setNoDefaultStyle($noDefaultStyle)
+    {
+        $this->noDefaultStyle = $noDefaultStyle;
     }
 
     // Specify whether encryption should be applied to the output PDF file.
@@ -392,7 +545,7 @@ class Prince
     // disallowModify: True to disallow modification of the PDF file.
     // disallowCopy: True to disallow copying from the PDF file.
     // disallowAnnotate: True to disallow annotation of the PDF file.
-      public function setEncryptInfo($keyBits,
+    public function setEncryptInfo($keyBits,
                                    $userPassword,
                                    $ownerPassword,
                                    $disallowPrint = false,
@@ -409,38 +562,38 @@ class Prince
         $this->encrypt = true;
 
         $this->encryptInfo =
-                ' --key-bits ' . $keyBits .
-                ' --user-password="' . $this->cmdlineArgEscape($userPassword) .
-                '" --owner-password="' . $this->cmdlineArgEscape($ownerPassword) . '" ';
+            ' --key-bits ' . $keyBits .
+            ' --user-password="' . $this->cmdlineArgEscape($userPassword) .
+            '" --owner-password="' . $this->cmdlineArgEscape($ownerPassword) . '" ';
 
         if ($disallowPrint)
         {
             $this->encryptInfo .= '--disallow-print ';
         }
-            
+
         if ($disallowModify)
         {
             $this->encryptInfo .= '--disallow-modify ';
         }
-            
+
         if ($disallowCopy)
         {
             $this->encryptInfo .= '--disallow-copy ';
         }
-            
+
         if ($disallowAnnotate)
         {
             $this->encryptInfo .= '--disallow-annotate ';
         }
     }
-    
-  
+
+
     //Set other options.
     public function setOptions($options)
     {
-    	  $this->options = $options;
+        $this->options = $options;
     }
-	
+
 
     // Convert an XML or HTML file to a PDF file.
     // The name of the output PDF file will be the same as the name of the
@@ -454,11 +607,11 @@ class Prince
         $pathAndArgs = $this->getCommandLine();
         $pathAndArgs .= '--structured-log=normal ';
         $pathAndArgs .= '"' . $xmlPath . '"';
-   
+
         return $this->convert_internal_file_to_file($pathAndArgs, $msgs, $dats);
 
     }
-    
+
     // Convert an XML or HTML file to a PDF file.
     // xmlPath: The filename of the input XML or HTML document.
     // pdfPath: The filename of the output PDF file.
@@ -470,10 +623,10 @@ class Prince
         $pathAndArgs = $this->getCommandLine();
         $pathAndArgs .= '--structured-log=normal ';
         $pathAndArgs .= '"' . $xmlPath . '" -o "' . $pdfPath . '"';
-            
+
         return $this->convert_internal_file_to_file($pathAndArgs, $msgs, $dats);
     }
-    
+
     //Convert multiple XML or HTML files to a PDF file.
     // xmlPaths: An array of the input XML or HTML documents.
     // msgs: An optional array in which to return error and warning messages.
@@ -483,16 +636,16 @@ class Prince
     {
         $pathAndArgs = $this->getCommandLine();
         $pathAndArgs .= '--structured-log=normal ';
-        
+
         foreach($xmlPaths as $xmlPath)
         {
-                $pathAndArgs .= '"' . $xmlPath . '" ';
+            $pathAndArgs .= '"' . $xmlPath . '" ';
         }
         $pathAndArgs .= '-o "' . $pdfPath . '"';
-  
-         return $this->convert_internal_file_to_file($pathAndArgs, $msgs, $dats);
+
+        return $this->convert_internal_file_to_file($pathAndArgs, $msgs, $dats);
     }
-    
+
     // Convert multiple XML or HTML files to a PDF file, which will be passed
     // through to the output buffer of the current PHP page.
     // xmlPaths: An array of the input XML or HTML documents.
@@ -503,16 +656,16 @@ class Prince
     {
         $pathAndArgs = $this->getCommandLine();
         $pathAndArgs .= '--structured-log=buffered ';
-        
+
         foreach($xmlPaths as $xmlPath)
         {
-                $pathAndArgs .= '"' . $xmlPath . '" ';
+            $pathAndArgs .= '"' . $xmlPath . '" ';
         }
         $pathAndArgs .= '-o -';
-        
-         return $this->convert_internal_file_to_passthru($pathAndArgs, $msgs, $dats);
+
+        return $this->convert_internal_file_to_passthru($pathAndArgs, $msgs, $dats);
     }
-    
+
     // Convert an XML or HTML file to a PDF file, which will be passed
     // through to the output buffer of the current PHP page.
     // xmlPath: The filename of the input XML or HTML document.
@@ -523,10 +676,10 @@ class Prince
     {
         $pathAndArgs = $this->getCommandLine();
         $pathAndArgs .= '--structured-log=buffered "' . $xmlPath . '" -o -';
-            
+
         return $this->convert_internal_file_to_passthru($pathAndArgs, $msgs, $dats);
     }
-    
+
     // Convert an XML or HTML string to a PDF file, which will be passed
     // through to the output buffer of the current PHP page.
     // xmlString: A string containing an XML or HTML document.
@@ -537,10 +690,10 @@ class Prince
     {
         $pathAndArgs = $this->getCommandLine();
         $pathAndArgs .= '--structured-log=buffered -';
-            
+
         return $this->convert_internal_string_to_passthru($pathAndArgs, $xmlString, $msgs, $dats);
     }
-    
+
     // Convert an XML or HTML string to a PDF file.
     // xmlString: A string containing an XML or HTML document.
     // pdfPath: The filename of the output PDF file.
@@ -552,20 +705,20 @@ class Prince
         $pathAndArgs = $this->getCommandLine();
         $pathAndArgs .= '--structured-log=normal ';
         $pathAndArgs .= ' - -o "' . $pdfPath . '"';
-            
+
         return $this->convert_internal_string_to_file($pathAndArgs, $xmlString, $msgs, $dats);
     }
 
     private function getCommandLine()
     {
-        $cmdline = '"' . $this->exePath . '" ' . $this->styleSheets . $this->scripts . $this->fileAttachments;
+        $cmdline = '"' . $this->exePath . '" ' . $this->styleSheets . $this->scripts . $this->fileAttachments . $this->remaps;
 
         if (strcasecmp($this->inputType, 'auto') == 0)
         {
         }
         else
         {
-                $cmdline .=  '-i "' . $this->inputType . '" ';
+            $cmdline .=  '-i "' . $this->inputType . '" ';
         }
 
         if ($this->javascript)
@@ -582,30 +735,69 @@ class Prince
         {
             $cmdline .= '--no-xinclude ';
         }
-
-        if ($this->httpUser != '')
+        else
         {
-            $cmdline .= '--http-user="' . $this->httpUser . '" ';
+            $cmdline .= '--xinclude ';
         }
 
-        if ($this->httpPassword != '')
+        if ($this->xmlExternalEntities == true)
         {
-            $cmdline .= '--http-password="' . $this->httpPassword . '" ';
+            $cmdline .= '--xml-external-entities ';
         }
-        
-        if($this->httpProxy != '')
+
+        if ($this->noLocalFiles == true)
         {
-                $cmdline .= '--http-proxy="' . $this->httpProxy . '" ';
+            $cmdline .= '--no-local-files ';
         }
-        
-        if($this->httpTimeout != '')
+
+        if ($this->noNetwork == true)
         {
-                $cmdline .= '--http-timeout="' . $this->httpTimeout . '" ';
+            $cmdline .= '--no-network ';
         }
-        
-        if($this->insecure)
+
+        if ($this->httpProxy != '')
         {
-                $cmdline .= '--insecure ';
+            $cmdline .= '--http-proxy="' . $this->httpProxy . '" ';
+        }
+
+        if ($this->httpTimeout !='')
+        {
+            $cmdline .= '--http-timeout="' . $this->httpTimeout . '" ';
+        }
+
+        if ($this->cookie != '')
+        {
+            $cmdline .= '--cookie="' . $this->cookie . '" ';
+        }
+
+        if ($this->cookieJar != '')
+        {
+            $cmdline .= '--cookiejar="' . $this->cookieJar . '" ';
+        }
+
+        if ($this->sslCaCert != '')
+        {
+            $cmdline .= '--ssl-cacert="' . $this->sslCaCert . '" ';
+        }
+
+        if ($this->sslCaPath != '')
+        {
+            $cmdline .= '--ssl-capath="' . $this->sslCaPath . '" ';
+        }
+
+        if ($this->sslVersion != '')
+        {
+            $cmdline .= '--ssl-version="' . $this->sslVersion . '" ';
+        }
+
+        if ($this->insecure)
+        {
+            $cmdline .= '--insecure ';
+        }
+
+        if ($this->noParallelDownloads)
+        {
+            $cmdline .= '--no-parallel-downloads ';
         }
 
         if ($this->logFile != '')
@@ -613,21 +805,36 @@ class Prince
             $cmdline .= '--log="' . $this->logFile . '" ';
         }
 
-        if($this->fileRoot != '')
+        if($this->verbose)
         {
-                 $cmdline .= '--fileroot="' . $this->fileRoot . '" ';
+            $cmdline .= '--verbose ';
         }
-        
-        if($this->licenseFile != '')
+
+        if($this->debug)
         {
-                $cmdline .= '--license-file="' . $this->licenseFile . '" ';
+            $cmdline .= '--debug ';
         }
-        
-        if($this->licenseKey != '')
+
+        if($this->noWarnCss)
         {
-                $cmdline .= '--license-key="' . $this->licenseKey . '" ';
+            $cmdline .= '--no-warn-css ';
         }
-        
+
+        if ($this->fileRoot != '')
+        {
+            $cmdline .= '--fileroot="' . $this->fileRoot . '" ';
+        }
+
+        if ($this->licenseFile != '')
+        {
+            $cmdline .= '--license-file="' . $this->licenseFile . '" ';
+        }
+
+        if ($this->licenseKey != '')
+        {
+            $cmdline .= '--license-key="' . $this->licenseKey . '" ';
+        }
+
         if ($this->embedFonts == false)
         {
             $cmdline .= '--no-embed-fonts ';
@@ -642,50 +849,90 @@ class Prince
         {
             $cmdline .= '--no-artificial-fonts ';
         }
-        
-        if($this->authMethod != '')
+
+        if ($this->authMethod != '')
         {
-        	$cmdline .=  '--auth-method="' . $this->cmdlineArgEscape($this->authMethod) . '" ';
+            $cmdline .=  '--auth-method="' . $this->cmdlineArgEscape($this->authMethod) . '" ';
         }
-        
-        if($this->authUser != '')
+
+        if ($this->authUser != '')
         {
-        	$cmdline .= '--auth-user="' . $this->cmdlineArgEscape($this->authUser) . '" ';
+            $cmdline .= '--auth-user="' . $this->cmdlineArgEscape($this->authUser) . '" ';
         }
-        
-        if($this->authPassword != '')
+
+        if ($this->authPassword != '')
         {
-        	$cmdline .= '--auth-password="' . $this->cmdlineArgEscape($this->authPassword) . '" ';
+            $cmdline .= '--auth-password="' . $this->cmdlineArgEscape($this->authPassword) . '" ';
         }
-        
-        if($this->authServer != '')
+
+        if ($this->authServer != '')
         {
-        	$cmdline .= '--auth-server="' . $this->cmdlineArgEscape($this->authServer) . '" ';
+            $cmdline .= '--auth-server="' . $this->cmdlineArgEscape($this->authServer) . '" ';
         }
-        
-        if($this->authScheme != '')
+
+        if ($this->authScheme != '')
         {
-        	$cmdline .= '--auth-scheme="' . $this->cmdlineArgEscape($this->authScheme) . '" ';
+            $cmdline .= '--auth-scheme="' . $this->cmdlineArgEscape($this->authScheme) . '" ';
         }
-        
-        if($this->noAuthPreemptive)
+
+        if ($this->noAuthPreemptive)
         {
-        	$cmdline .= '--no-auth-preemptive ';
+            $cmdline .= '--no-auth-preemptive ';
         }
-        
-        if($this->pageSize != '')
+
+        if ($this->media != '')
         {
-        	$cmdline .= '--page-size="' . $this->cmdlineArgEscape($this->pageSize) . '" ';
+            $cmdline .= '--media="' . $this->cmdlineArgEscape($this->media) . '" ';
         }
-        
-        if($this->pageMargin != '')
+
+        if ($this->pageSize != '')
         {
-        	$cmdline .= '--page-margin="' . $this->cmdlineArgEscape($this->pageMargin) . '" ';
+            $cmdline .= '--page-size="' . $this->cmdlineArgEscape($this->pageSize) . '" ';
         }
-        
+
+        if ($this->pageMargin != '')
+        {
+            $cmdline .= '--page-margin="' . $this->cmdlineArgEscape($this->pageMargin) . '" ';
+        }
+
+        if ($this->noAuthorStyle == true)
+        {
+            $cmdline .= '--no-author-style ';
+        }
+
+        if ($this->noDefaultStyle == true)
+        {
+            $cmdline .= '--no-default-style ';
+        }
+
+        if ($this->forceIdentityEncoding == true)
+        {
+            $cmdline .= '--force-identity-encoding ';
+        }
+
         if ($this->compress == false)
         {
             $cmdline .= '--no-compress ';
+        }
+
+        if ($this->pdfOutputIntent != '')
+        {
+            $cmdline .= '--pdf-output-intent="' . $this->cmdlineArgEscape($this->pdfOutputIntent) . '" ';
+
+            if ($this->convertColors == true)
+            {
+                $cmdline .= '--convert-colors ';
+            }
+        }
+
+        if ($this->fallbackCmykProfile != '')
+        {
+            $cmdline .= '--fallback-cmyk-profile="'. $this->cmdlineArgEscape($this->fallbackCmykProfile) . '" ';
+        }
+
+        if ($this->pdfProfile != '')
+        {
+            $cmdline .= '--pdf-profile="' . $this->cmdlineArgEscape($this->pdfProfile) . '" ';
         }
 
         if ($this->pdfTitle != '')
@@ -717,10 +964,10 @@ class Prince
         {
             $cmdline .= '--encrypt ' . $this->encryptInfo;
         }
-        
-        if($this->options != '')
+
+        if ($this->options != '')
         {
-        	$cmdline .= $this->cmdlineArgEscape($this->options) . ' ';
+            $cmdline .= $this->cmdlineArgEscape($this->options) . ' ';
         }
 
         return $cmdline;
@@ -729,13 +976,13 @@ class Prince
     private function convert_internal_file_to_file($pathAndArgs, &$msgs, &$dats)
     {
         $descriptorspec = array(
-                                0 => array("pipe", "r"),
-                                1 => array("pipe", "w"),
-                                2 => array("pipe", "w")
-                                );
-        
+            0 => array("pipe", "r"),
+            1 => array("pipe", "w"),
+            2 => array("pipe", "w")
+        );
+
         $process = proc_open($pathAndArgs, $descriptorspec, $pipes, NULL, NULL, array('bypass_shell' => TRUE));
-        
+
         if (is_resource($process))
         {
             $result = $this->readMessages($pipes[2], $msgs, $dats);
@@ -743,7 +990,7 @@ class Prince
             fclose($pipes[0]);
             fclose($pipes[1]);
             fclose($pipes[2]);
-            
+
             proc_close($process);
 
             return ($result == 'success');
@@ -757,13 +1004,13 @@ class Prince
     private function convert_internal_string_to_file($pathAndArgs, $xmlString, &$msgs, &$dats)
     {
         $descriptorspec = array(
-                            0 => array("pipe", "r"),
-                            1 => array("pipe", "w"),
-                            2 => array("pipe", "w")
-                            );
-        
+            0 => array("pipe", "r"),
+            1 => array("pipe", "w"),
+            2 => array("pipe", "w")
+        );
+
         $process = proc_open($pathAndArgs, $descriptorspec, $pipes, NULL, NULL, array('bypass_shell' => TRUE));
-        
+
         if (is_resource($process))
         {
             fwrite($pipes[0], $xmlString);
@@ -771,9 +1018,9 @@ class Prince
             fclose($pipes[1]);
 
             $result = $this->readMessages($pipes[2], $msgs, $dats);
-            
+
             fclose($pipes[2]);
-        
+
             proc_close($process);
 
             return ($result == 'success');
@@ -787,13 +1034,13 @@ class Prince
     private function convert_internal_file_to_passthru($pathAndArgs, &$msgs, &$dats)
     {
         $descriptorspec = array(
-                            0 => array("pipe", "r"),
-                            1 => array("pipe", "w"),
-                            2 => array("pipe", "w")
-                            );
-        
+            0 => array("pipe", "r"),
+            1 => array("pipe", "w"),
+            2 => array("pipe", "w")
+        );
+
         $process = proc_open($pathAndArgs, $descriptorspec, $pipes, NULL, NULL, array('bypass_shell' => TRUE));
-        
+
         if (is_resource($process))
         {
             fclose($pipes[0]);
@@ -801,9 +1048,9 @@ class Prince
             fclose($pipes[1]);
 
             $result = $this->readMessages($pipes[2], $msgs, $dats);
-            
+
             fclose($pipes[2]);
-        
+
             proc_close($process);
 
             return ($result == 'success');
@@ -817,13 +1064,13 @@ class Prince
     private function convert_internal_string_to_passthru($pathAndArgs, $xmlString, &$msgs, &$dats)
     {
         $descriptorspec = array(
-                            0 => array("pipe", "r"),
-                            1 => array("pipe", "w"),
-                            2 => array("pipe", "w")
-                            );
-        
+            0 => array("pipe", "r"),
+            1 => array("pipe", "w"),
+            2 => array("pipe", "w")
+        );
+
         $process = proc_open($pathAndArgs, $descriptorspec, $pipes, NULL, NULL, array('bypass_shell' => TRUE));
-        
+
         if (is_resource($process))
         {
             fwrite($pipes[0], $xmlString);
@@ -832,9 +1079,9 @@ class Prince
             fclose($pipes[1]);
 
             $result = $this->readMessages($pipes[2], $msgs, $dats);
-            
+
             fclose($pipes[2]);
-        
+
             proc_close($process);
 
             return ($result == 'success');
@@ -850,12 +1097,12 @@ class Prince
         while (!feof($pipe))
         {
             $line = fgets($pipe);
-            
+
             if ($line != false)
             {
                 $msgtag = substr($line, 0, 4);
                 $msgbody = rtrim(substr($line, 4));
-                
+
                 if ($msgtag == 'fin|')
                 {
                     return $msgbody;
@@ -870,38 +1117,38 @@ class Prince
 
                     $msgs[] = $msg;
                 }
-		else if ($msgtag == 'dat|')
-		{
-		    $dat = explode('|', $msgbody, 2);
+                else if ($msgtag == 'dat|')
+                {
+                    $dat = explode('|', $msgbody, 2);
 
-		    $dats[] = $dat;
-		}
+                    $dats[] = $dat;
+                }
                 else
                 {
                     // ignore other messages
                 }
             }
         }
-        
+
         return '';
     }
-    
+
     private function cmdlineArgEscape($argStr)
     {
         return $this->cmdlineArgEscape2($this->cmdlineArgEscape1($argStr));
     }
-        
+
     //In the input string $argStr, a double quote with zero or more preceding backslash(es)
     //will be replaced with: n*backslash + doublequote => (2*n+1)*backslash + doublequote
     private function cmdlineArgEscape1($argStr)
     {
         //chr(34) is character double quote ( " ), chr(92) is character backslash ( \ ).
         $len = strlen($argStr);
-        
+
         $outputStr = '';
         $numSlashes = 0;
         $subStrStart = 0;
-        
+
         for($i = 0; $i < $len; $i++)
         {
             if($argStr[$i] == chr(34))
@@ -920,29 +1167,29 @@ class Prince
                         break;
                     }
                 }
-                
+
                 $outputStr .= substr($argStr, $subStrStart, ($i - $numSlashes - $subStrStart));
-                
+
                 for($k = 0; $k < $numSlashes; $k++)
                 {
                     $outputStr .= chr(92) . chr(92);
                 }
                 $outputStr  .= chr(92) . chr(34);
-                
+
                 $subStrStart = $i + 1;
             }
         }
         $outputStr .= substr($argStr, $subStrStart, ($i - $subStrStart));
-        
+
         return $outputStr;
     }
-        
+
     //Double the number of trailing backslash(es):      n*trailing backslash => (2*n)*trailing backslash.
     private function cmdlineArgEscape2($argStr)
     {
         //chr(92) is character backslash ( \ ).
         $len = strlen($argStr);
-        
+
         $numTrailingSlashes = 0;
         for($i = ($len - 1); $i  >= 0; $i--)
         {
@@ -955,13 +1202,13 @@ class Prince
                 break;
             }
         }
-        
+
         while($numTrailingSlashes > 0)
         {
             $argStr .= chr(92);
             $numTrailingSlashes -= 1;
         }
-        
+
         return $argStr;
     }
 }
